@@ -1,0 +1,27 @@
+import javax.swing.JOptionPane;
+public class PackageDateTest {
+ public static void main(String args[])
+ {
+ PackageDate packageDate=new PackageDate();
+ String output="After instantiation:\n"+packageDate.toString();
+ packageDate.number=77;
+ packageDate.string="Good bye";
+ output+="\nAfter changing values:\n"+packageDate.toString();
+ JOptionPane.showMessageDialog(null,output,"Demonstrating Package Access",JOptionPane.INFORMATION_MESSAGE);
+ System.exit(0);
+ }
+}
+class PackageDate{
+ int number;
+ String string;
+ 
+ public PackageDate()
+ {
+  number=0;
+  string="Hello";
+ }
+ public String toString()
+ {
+  return "number: "+number+" string: "+string;
+ }
+}
