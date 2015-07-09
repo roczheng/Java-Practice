@@ -1,0 +1,127 @@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+public class DeckOfCards extends JFrame{
+ private Card deck[];
+ private int currentCard;
+ private JButton dealButton,shuffleButton;
+ private JTextField displayField;
+ private JLabel startusLabel;
+ 
+ public DeckOfCards()
+ {
+  super("Card Dealing Program");
+ 
+  String faces[]={"Ace","Deuce","Three","Four","Five","Six","Seven","Eight","Nine","Ten","Jack","Queen","King"};
+  String suits[]={"Hearts","Diamonds","Clubs","Spades"};
+  deck=new Card[52];
+  currentCard=-1;
+ 
+  for(int count=0;count<deck.length;count++)
+   deck[count]=new Card(faces[count%13],suits[count/13]);
+  Container container=getContentPane();
+  container.setLayout(new FlowLayout());
+ 
+  dealButton=new JButton("Deal card");
+  dealButton.addActionListener(
+   new ActionListener()
+   {
+    public void actionPerformed(ActionEvent actionEvent)
+    {
+     Card dealt=dealCard();
+     if(dealt!=null)
+     {
+      displayField.setText(dealt.toString());
+      startusLabel.setText("Card #: "+currentCard);
+     }
+     else
+     {
+      displayField.setText("NO MORE CARDS TO DEAL");
+      startusLabel.setText("Shutffle cards to continue");
+     
+     }
+    }
+   }
+  );
+ 
+  container.add(dealButton);
+ 
+  shuffleButton=new JButton("Shuffle cards");
+  shuffleButton.addActionListener(
+   new ActionListener()
+   {
+    public void actionPerformed(ActionEvent actionEvent)
+    {
+     displayField.setText("SHUFFLING.....,.");
+     shuffle();
+     displayField.setText("DECK IS SHUFFLED");
+     
+    }
+   }
+  );
+ 
+  container.add(shuffleButton);
+ 
+  displayField=new JTextField(20);
+  displayField.setEditable(false);
+  container.add(displayField);
+ 
+  startusLabel=new JLabel();
+  container.add(startusLabel);
+  setSize(275,200);
+  show();
+ }
+ 
+ public void shuffle()
+ {
+  currentCard=-1;
+  for(int first=0;first<deck.length;first++)
+  {
+   int second=(int)(Math.random()*52);
+   Card temp=deck[first];
+   deck[first]=deck[second];
+   deck[second]=temp;
+  }
+  dealButton.setEnabled(true);
+ }
+ 
+ public Card dealCard()
+ {
+  if(++currentCard<deck.length)
+   return deck[currentCard];
+  else{
+   dealButton.setEnabled(false);
+  return null;
+  }
+ }
+ 
+ public static void main(String args[])
+ {
+  DeckOfCards app=new DeckOfCards();
+  app.addWindowListener(
+   new WindowAdapter()
+   {
+    public void windowClosing(Window windowEvent)
+    {
+     System.exit(0);
+    }
+   }
+  );
+ }
+}
+class Card{
+ private String face;
+ private String suit;
+ 
+ public Card(String cardFace,String cardSuit)
+ {
+  face=cardFace;
+  suit=cardSuit;
+ 
+ }
+ 
+ public String toString()
+ {
+  return face+" of "+suit;
+ }
+}
